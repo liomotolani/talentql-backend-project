@@ -22,6 +22,9 @@ public class DobService {
 
 
     public BasicResponseDTO calculateAge(String dateOfBirth) {
+        if(dateOfBirth.equals(null)){
+            return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
+        }
         dateOfBirth = getDateOfBirth(dateOfBirth);
         LocalDate dob = LocalDate.parse(dateOfBirth);
         LocalDate currentDate = LocalDate.now();
