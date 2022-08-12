@@ -5,10 +5,11 @@
 # This application is a springboot application which is a stand alone application.
 # This application is sectioned into 5 packages:
 # 1. The controller : Which is the entry point for all api request into this application.
-# 2. The service: This is where I have the business logic that calculates the age using the date of birth passed as a query parameter and also where the #rate limiter is being enforced.
-# 3. The Configuration : This package has a class RedisConfig that has the configuration for redis in other to manage cache since this is a distributed #system.
-# 4. The Util : This package has a class with a method to instantiate the bucket and ensure tokens are refilled after every request has gone pass their #limit.
+# 2. The service: This is where I have the business logic that calculates the age using the date of birth passed as a query parameter and also where the rate limiter is being enforced.
+# 3. The Configuration : This package has a class RedisConfig that has the configuration for redis in other to manage cache since this is a distributed system.
+# 4. The Util : This package has a class with a method to instantiate the bucket and ensure tokens are refilled after every request has gone pass their limit.
 # 5. The DTO: This has a data transfer object class that helps to handle responses based on the parameter passed to the method in the service class.
+
 # In my design I used bucket4j dependency which applies the token bucket algorithm to handle request congestions. The token bucket algorithm is not the best but it is quite better than the leaky bucket algorithm, because it handles request faster and also in a more distributed way compared to the leaky bucket algorithm.
 
 # Brief Explanation on how the token bucket algorithm works using this task as a use case
