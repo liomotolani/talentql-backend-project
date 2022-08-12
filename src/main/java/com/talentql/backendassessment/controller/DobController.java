@@ -2,7 +2,7 @@ package com.talentql.backendassessment.controller;
 
 import com.talentql.backendassessment.dto.BasicResponseDTO;
 import com.talentql.backendassessment.service.DobService;
-import lombok.RequiredArgsConstructor; 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
