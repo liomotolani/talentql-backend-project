@@ -12,12 +12,12 @@
 # In my design I used bucket4j dependency which applies the token bucket algorithm to handle request congestions. The token bucket algorithm is not the best but it is quite better than the leaky bucket algorithm, because it handles request faster and also in a more distributed way compared to the leaky bucket algorithm.
 
 # Brief Explanation on how the token bucket algorithm works using this task as a use case
-# In the implementation a limit was set in this case the limit was 3, and this sets the number of token in the bucket which can be used within a second
-# When user sends the first request, the bucket checks if there are enough tokens, if yes it removes the token and then sends a packet in this case allows the request pull through without throwing any error at this point we are left with two tokens
-# When user sends the second token with the same 1 second, it takes out the next token and the sends packets.
-# On the third request within the 1 second it still sends the packets but by this time it takes out the last token.
-# On the fourth request within the 1 second at this points there are no tokens left in the bucket so it won't send any packet and then it'd throw an error
-# At the end of every 1 second it refills the bucket with another set of tokens and then the circle continues.
+# 1.In the implementation a limit was set in this case the limit was 3, and this sets the number of token in the bucket which can be used within a second
+# 2.When user sends the first request, the bucket checks if there are enough tokens, if yes it removes the token and then sends a packet in this case allows the request pull through without throwing any error at this point we are left with two tokens
+# 3.When user sends the second token with the same 1 second, it takes out the next token and the sends packets.
+# 4.On the third request within the 1 second it still sends the packets but by this time it takes out the last token.
+# 5.On the fourth request within the 1 second at this points there are no tokens left in the bucket so it won't send any packet and then it'd throw an error
+# 6.At the end of every 1 second it refills the bucket with another set of tokens and then the circle continues.
 
 
 # HOW DOES IT WORK
