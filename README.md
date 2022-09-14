@@ -12,7 +12,7 @@ This application is sectioned into 5 packages:
 
 In my design I used bucket4j dependency which applies the token bucket algorithm to handle request congestions. The token bucket algorithm is not the best but it is quite better than the leaky bucket algorithm, because it handles request faster and also in a more distributed way compared to the leaky bucket algorithm.
 
-# Brief Explanation on how the token bucket algorithm works using this task as a use case
+# Brief explanation on how the token bucket algorithm works using this task as a use case
 1. In the implementation a limit was set in this case the limit was 3, and this sets the number of token in the bucket which can be used within a second
 2. When user sends the first request, the bucket checks if there are enough tokens, if yes it removes the token and then sends a packet in this case allows the request pull through without throwing any error at this point we are left with two tokens
 3. When user sends the second token with the same 1 second, it takes out the next token and the sends packets.
@@ -21,7 +21,7 @@ In my design I used bucket4j dependency which applies the token bucket algorithm
 6. At the end of every 1 second it refills the bucket with another set of tokens and then the circle continues.
 
 
-# HOW DOES IT WORK
+# How it works
 Client/ Caller sends a get request to this end point "" with a request parameter date of birth
 The date birth is passed to a method calculate age.
 The following checks happen in method calculate age:
