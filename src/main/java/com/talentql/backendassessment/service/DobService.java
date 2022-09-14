@@ -20,7 +20,7 @@ public class DobService {
 
 
     public BasicResponseDTO calculateAge(String dateOfBirth) {
-        if(dateOfBirth == null){
+        if(dateOfBirth == null || dateOfBirth.equals("null")){
             return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
         }
         String newDateOfBirth = getDateOfBirth(dateOfBirth);

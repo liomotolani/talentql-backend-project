@@ -7,9 +7,8 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BasicResponseDTO {
+public class BasicResponseDTO extends StandardResponseDTO {
 
-    private Status status;
 
     private Object age;
 
@@ -23,18 +22,14 @@ public class BasicResponseDTO {
     }
 
     public BasicResponseDTO(Status status, String message) {
-        this.status = status;
+        super(status);
         this.message = message;
     }
 
     public BasicResponseDTO(Status status, Object age) {
-        this.status = status;
+        super(status);
         this.age = age;
     }
 
-    public BasicResponseDTO(Status status, Object age, String message) {
-        this.status = status;
-        this.age = age;
-        this.message = message;
-    }
+
 }

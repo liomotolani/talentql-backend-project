@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/howold")
 @RequiredArgsConstructor
-public class DobController {
+public class DobController extends Controller{
 
     private final DobService dobService;
 
     @GetMapping()
     public BasicResponseDTO calculateAge(@RequestParam(name = "dob") String dateOfBirth){
-        return dobService.calculateAge(dateOfBirth);
+        return responseWithUpdatedHttpStatus(dobService.calculateAge(dateOfBirth));
     }
 
 }
