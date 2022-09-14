@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/48f2732e2d8f44e98e9a081f71671047)](https://www.codacy.com/gh/liomotolani/talentql-backend-project/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=liomotolani/talentql-backend-project&amp;utm_campaign=Badge_Grade)
+
 # Talentql-backend-project
 This backend project was an assessment to create an Endpoint to that accepts date of birth as a query parameter and returns the current age
 with a rate limiter that allows client/caller to send 3 request in 1 second.
