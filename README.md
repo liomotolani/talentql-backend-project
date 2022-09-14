@@ -32,7 +32,7 @@ In my design I used bucket4j dependency which applies the token bucket algorithm
 5. On the fourth request within the 1 second at this points there are no tokens left in the bucket so it won't send any packet and then it'd throw an error
 
 6. At the end of every 1 second it refills the bucket with another set of tokens and then the circle continues.
-7. 
+
 # How it works
 Client/ Caller sends a get request to this end point "" with a request parameter date of birth.
 
