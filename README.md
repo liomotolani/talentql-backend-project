@@ -3,8 +3,10 @@
 # Talentql-backend-project
 This backend project was an assessment to create an Endpoint to that accepts date of birth as a query parameter and returns the current age
 with a rate limiter that allows client/caller to send 3 request in 1 second.
-#Implementation /Design
+
+# Implementation /Design
 This application is a springboot application which is a stand alone application.
+
 This application is sectioned into 5 packages:
 1. The controller : Which is the entry point for all api request into this application.
 
@@ -17,6 +19,7 @@ This application is sectioned into 5 packages:
 5. The DTO: This has a data transfer object class that helps to handle responses based on the parameter passed to the method in the service class.
 
 In my design I used bucket4j dependency which applies the token bucket algorithm to handle request congestions. The token bucket algorithm is not the best but it is quite better than the leaky bucket algorithm, because it handles request faster and also in a more distributed way compared to the leaky bucket algorithm.
+
 # Brief explanation on how the token bucket algorithm works using this task as a use case
 1. In the implementation a limit was set in this case the limit was 3, and this sets the number of token in the bucket which can be used within a second
 
@@ -29,11 +32,11 @@ In my design I used bucket4j dependency which applies the token bucket algorithm
 5. On the fourth request within the 1 second at this points there are no tokens left in the bucket so it won't send any packet and then it'd throw an error
 
 6. At the end of every 1 second it refills the bucket with another set of tokens and then the circle continues.
+7. 
 # How it works
-Client/ Caller sends a get request to this end point "" with a request parameter date of birth
-The date birth is passed to a method calculate age.
-The following checks happen in method calculate age:
+Client/ Caller sends a get request to this end point "" with a request parameter date of birth.
 
+The following checks happen in method calculate age:
 1. It takes the date of birth, and check if it is a valid date, if no it throws a 404 error Bad request with a message "Invalid date format"
 
 2. If date passes check in step 1, then we have bucket object that checks if there is enough token for the request to go through within the specified duration, it calculates the age by using a library to check the difference between the date of birth passed and the current date and then returns the age.
