@@ -2,14 +2,12 @@ package com.talentql.backendassessment.service;
 
 import com.talentql.backendassessment.dto.BasicResponseDTO;
 import com.talentql.backendassessment.dto.Status;
-import com.talentql.backendassessment.util.DateValidationUtil;
 import com.talentql.backendassessment.util.RateLimiter;
 import io.github.bucket4j.Bucket;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +20,7 @@ public class DobService {
 
 
     public BasicResponseDTO calculateAge(String dateOfBirth) {
-        if(dateOfBirth.equals(null)){
+        if(dateOfBirth == null){
             return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
         }
         dateOfBirth = getDateOfBirth(dateOfBirth);
