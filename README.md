@@ -5,9 +5,8 @@ This backend project was an assessment to create an Endpoint to that accepts dat
 with a rate limiter that allows client/caller to send 3 request in 1 second.
 
 # Implementation /Design
-This application is a springboot application which is a stand alone application.
+This application is a springboot application which is a stand alone application sectioned into 5 packages:
 
-This application is sectioned into 5 packages:
 1. The controller : Which is the entry point for all api request into this application.
 
 2. The service: This is where I have the business logic that calculates the age using the date of birth passed as a query parameter and also where the rate limiter is being enforced.
