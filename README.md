@@ -1,7 +1,7 @@
 # Talentql-backend-project
 This backend project was an assessment to create an Endpoint to that accepts date of birth as a query parameter and returns the current age
 with a rate limiter that allows client/caller to send 3 request in 1 second.
-#Implementatin /Design
+#Implementation /Design
 This application is a springboot application which is a stand alone application.
 This application is sectioned into 5 packages:
 1. The controller : Which is the entry point for all api request into this application.
