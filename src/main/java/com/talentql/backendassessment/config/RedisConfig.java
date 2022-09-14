@@ -7,7 +7,6 @@ import org.redisson.config.Config;
 import org.redisson.jcache.configuration.RedissonConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 
 import javax.cache.CacheManager;

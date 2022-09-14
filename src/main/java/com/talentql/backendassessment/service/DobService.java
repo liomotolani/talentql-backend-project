@@ -23,10 +23,10 @@ public class DobService {
         if(dateOfBirth == null){
             return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
         }
-        dateOfBirth = getDateOfBirth(dateOfBirth);
-        LocalDate dob = LocalDate.parse(dateOfBirth);
+        String newDateOfBirth = getDateOfBirth(dateOfBirth);
+        LocalDate dob = LocalDate.parse(newDateOfBirth);
         LocalDate currentDate = LocalDate.now();
-        Bucket bucket = rateLimiter.resolveBucket(dateOfBirth);
+        Bucket bucket = rateLimiter.resolveBucket(newDateOfBirth);
 
         if((dob != null) && (currentDate != null)) {
             if(bucket.tryConsume(3)) {
