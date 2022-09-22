@@ -5,10 +5,14 @@ import com.talentql.backendassessment.dto.Status;
 import com.talentql.backendassessment.util.RateLimiter;
 import io.github.bucket4j.Bucket;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,39 +25,28 @@ public class DobService {
 
     public BasicResponseDTO calculateAge(String dateOfBirth) {
       try{
-          long number = Long.parseLong(dateOfBirth);
-          boolean isNumeric = dateOfBirth.chars().allMatch( Character::isDigit );
-          if(number <= 0 || isNumeric){
-              return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
+          if(dateOfBirth == "undefined") {
+              return new BasicResponseDTO(Status.BAD_REQUEST);
           }
-          if(dateOfBirth == null || dateOfBirth.equals("null") || dateOfBirth.equals("undefined")){
-              return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
-          }
-          String newDateOfBirth = getDateOfBirth(dateOfBirth);
-          LocalDate dob = LocalDate.parse(newDateOfBirth);
-          LocalDate currentDate = LocalDate.now();
-          Bucket bucket = rateLimiter.resolveBucket(newDateOfBirth);
+          long dob = Long.parseLong(dateOfBirth);
+          Date currentDate = new Date();
+          long currentEpoch = currentDate.getTime();
+          Bucket bucket = rateLimiter.resolveBucket(dateOfBirth);
+          if(bucket.tryConsume(3)) {
+              long age = getDateOfBirth(currentEpoch) - getDateOfBirth(dob);
+              return new BasicResponseDTO(Status.SUCCESS,age);
+           }
+          return new BasicResponseDTO(Status.TOO_MANY_REQUESTS,"Rate limit exceeded, retry again in 1 second");
 
-          if((dob != null) && (currentDate != null)) {
-              if(bucket.tryConsume(3)) {
-                  long age = ChronoUnit.YEARS.between(dob,currentDate);
-                  return new BasicResponseDTO(Status.SUCCESS,age);
-              }
-              return new BasicResponseDTO(Status.TOO_MANY_REQUESTS,"Rate limit exceeded, retry again in 1 second");
-          }
-          return new BasicResponseDTO(Status.BAD_REQUEST);
       }catch (Exception ex){
           return new BasicResponseDTO(Status.BAD_REQUEST);
       }
     }
 
-    private String getDateOfBirth(String dateOfBirth) {
-        String datePattern = "\\d{4}-\\d{1,2}-\\d{1,2}";
-        Pattern pattern = Pattern.compile(datePattern);
-        Matcher matcher = pattern.matcher(dateOfBirth);
-        while(matcher.find()){
-            dateOfBirth = matcher.group();
-        }
-        return dateOfBirth;
+    private long getDateOfBirth(long epoch) {
+        Timestamp timestamp = new Timestamp(epoch);
+        LocalDateTime localDateTime = timestamp.toLocalDateTime();
+        LocalDate localDate = localDateTime.toLocalDate();
+        return localDate.getYear();
     }
 }
