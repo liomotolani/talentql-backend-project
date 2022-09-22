@@ -20,22 +20,31 @@ public class DobService {
 
 
     public BasicResponseDTO calculateAge(String dateOfBirth) {
-        if(dateOfBirth == null || dateOfBirth.equals("null") || dateOfBirth.equals("undefined")){
-            return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
-        }
-        String newDateOfBirth = getDateOfBirth(dateOfBirth);
-        LocalDate dob = LocalDate.parse(newDateOfBirth);
-        LocalDate currentDate = LocalDate.now();
-        Bucket bucket = rateLimiter.resolveBucket(newDateOfBirth);
+      try{
+          long number = Long.parseLong(dateOfBirth);
+          boolean isNumeric = dateOfBirth.chars().allMatch( Character::isDigit );
+          if(number <= 0 || isNumeric){
+              return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
+          }
+          if(dateOfBirth == null || dateOfBirth.equals("null") || dateOfBirth.equals("undefined")){
+              return new BasicResponseDTO(Status.BAD_REQUEST,"Invalid value");
+          }
+          String newDateOfBirth = getDateOfBirth(dateOfBirth);
+          LocalDate dob = LocalDate.parse(newDateOfBirth);
+          LocalDate currentDate = LocalDate.now();
+          Bucket bucket = rateLimiter.resolveBucket(newDateOfBirth);
 
-        if((dob != null) && (currentDate != null)) {
-            if(bucket.tryConsume(3)) {
-                long age = ChronoUnit.YEARS.between(dob,currentDate);
-                return new BasicResponseDTO(Status.SUCCESS,age);
-            }
-            return new BasicResponseDTO(Status.TOO_MANY_REQUESTS,"Rate limit exceeded, retry again in 1 second");
-        }
-        return new BasicResponseDTO(Status.BAD_REQUEST);
+          if((dob != null) && (currentDate != null)) {
+              if(bucket.tryConsume(3)) {
+                  long age = ChronoUnit.YEARS.between(dob,currentDate);
+                  return new BasicResponseDTO(Status.SUCCESS,age);
+              }
+              return new BasicResponseDTO(Status.TOO_MANY_REQUESTS,"Rate limit exceeded, retry again in 1 second");
+          }
+          return new BasicResponseDTO(Status.BAD_REQUEST);
+      }catch (Exception ex){
+          return new BasicResponseDTO(Status.BAD_REQUEST);
+      }
     }
 
     private String getDateOfBirth(String dateOfBirth) {
