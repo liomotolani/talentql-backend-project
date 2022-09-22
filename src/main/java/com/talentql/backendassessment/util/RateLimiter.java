@@ -1,33 +1,28 @@
 package com.talentql.backendassessment.util;
 
-import io.github.bucket4j.*;
-import io.github.bucket4j.distributed.proxy.ProxyManager;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Bucket4j;
+import io.github.bucket4j.Refill;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.time.Duration;
-import java.util.function.Supplier;
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Component
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RateLimiter {
 
-    private final ProxyManager<String> buckets;
-
-    @Value("${limit.value}")
-    private int limit;
+    private final Map<String, Bucket> bucket = new HashMap<>();
 
     public Bucket resolveBucket(String key) {
-        Supplier<BucketConfiguration> configSupplier = getConfigSupplierForUser();
-        return buckets.builder().build(key, configSupplier);
+        return bucket.computeIfAbsent(key, this::setUpBucket);
     }
 
-    private Supplier<BucketConfiguration> getConfigSupplierForUser() {
-        Refill refill = Refill.intervally(3, Duration.ofSeconds(1));
-        Bandwidth bandwidthLimit = Bandwidth.classic(3,refill);
-        return () -> (BucketConfiguration.builder()
-                .addLimit(bandwidthLimit)
-                .build());
+    private Bucket setUpBucket(String s) {
+        return Bucket4j.builder()
+                .addLimit(Bandwidth.classic(3, Refill.intervally(3, Duration.ofSeconds(1)))).build();
     }
 }
