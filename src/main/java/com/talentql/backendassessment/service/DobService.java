@@ -24,23 +24,15 @@ public class DobService {
 
 
     public BasicResponseDTO calculateAge(String dateOfBirth) {
-      try{
-          if(dateOfBirth == "undefined") {
-              return new BasicResponseDTO(Status.BAD_REQUEST);
-          }
-          long dob = Long.parseLong(dateOfBirth);
-          Date currentDate = new Date();
-          long currentEpoch = currentDate.getTime();
-          Bucket bucket = rateLimiter.resolveBucket(dateOfBirth);
-          if(bucket.tryConsume(3)) {
-              long age = getDateOfBirth(currentEpoch) - getDateOfBirth(dob);
-              return new BasicResponseDTO(Status.SUCCESS,age);
-           }
-          return new BasicResponseDTO(Status.TOO_MANY_REQUESTS,"Rate limit exceeded, retry again in 1 second");
-
-      }catch (Exception ex){
-          return new BasicResponseDTO(Status.BAD_REQUEST);
-      }
+        long dob = dateOfBirth.equals("undefined") ? 0 : Long.parseLong(dateOfBirth);
+        Date currentDate = new Date();
+        long currentEpoch = currentDate.getTime();
+        Bucket bucket = rateLimiter.resolveBucket(dateOfBirth);
+        if(bucket.tryConsume(3)) {
+            long age = getDateOfBirth(currentEpoch) - getDateOfBirth(dob);
+            return new BasicResponseDTO(Status.SUCCESS,age);
+        }
+        return new BasicResponseDTO(Status.TOO_MANY_REQUESTS,"Rate limit exceeded, retry again in 1 second");
     }
 
     private long getDateOfBirth(long epoch) {
